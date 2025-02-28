@@ -54,7 +54,7 @@ We used **Python** (`script2.py`) to perform non-linear regression on the cumula
 
 A plot comparing **actual** vs. **fitted** Nintendo Switch sales is shown below:
 
-![Nintendo Switch Bass Fit](../img/image1.png)
+![Nintendo Switch Bass Fit](Tecno-Pocket-Go-Bass-Model\img\switch_bass_fit.png)
 
 ## 5. Predicting Tecno Pocket Go Diffusion
 
