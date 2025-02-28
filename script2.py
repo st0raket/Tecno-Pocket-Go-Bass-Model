@@ -47,15 +47,12 @@ def main():
     plt.savefig('img/switch_bass_fit.png')
     plt.close()
     
-    # 5) Forecast the New Product (e.g., Tecno Pocket Go) Using the SAME p, q, M
-    #    NO parameter adjustments are made here.
-    #    We'll forecast 8 future periods (t=1..8). In reality, you'd decide how
-    #    to map these "periods" to months/years.
+
+    # The original dataset has inconsistant periods so a period here is 
     
     forecast_t = np.arange(1, 9, 1)
     new_product_pred = bass_cumulative(forecast_t, p_est, q_est, M_est)
     
-    # Create a DataFrame for the forecast
     forecast_df = pd.DataFrame({
         't': forecast_t,
         'Cumulative_Adoption': new_product_pred
