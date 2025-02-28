@@ -67,6 +67,18 @@ def main():
     print(f"\n===== Forecast for New Innovation (No Parameter Adjustment) =====")
     print(forecast_df)
     print(f"Saved forecast to: {forecast_path}\n")
+    
+    # Plot the forecast graph and save it in the img folder
+    plt.figure(figsize=(8,5))
+    plt.plot(forecast_df['t'], forecast_df['Cumulative_Adoption'], 'bo-', label='Forecast')
+    plt.xlabel('Time (Annual Index)')
+    plt.ylabel('Cumulative Adoption (millions)')
+    plt.title('Forecast for Tecno Pocket Go Diffusion')
+    plt.legend()
+    forecast_graph_path = 'img/product_forecast.png'
+    plt.savefig(forecast_graph_path)
+    plt.close()
+    print(f"Saved forecast graph to: {forecast_graph_path}\n")
 
 if __name__ == '__main__':
     main()
