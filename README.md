@@ -14,7 +14,7 @@ This repository contains the project files for analyzing the diffusion of the **
 - `data/nintendo_switch_sales_yearly.csv`: End-of-year data extracted from the cleaned dataset.
 - `data/product_forecast.csv`: Forecast output for the Tecno Pocket Go.
 - `img/`: Images used in the analysis (e.g., plots of Switch data and Bass fit).
-- `report/`: Contains `report_source.md` (the Markdown with our analysis) and potentially `report.pdf`.
+- `report/`: Contains `report_source.md` (the Markdown with our analysis)
 - `script1.py`: Python script for data loading and cleaning.
 - `script2.py`: Python script for Bass Model fitting and predictions.
 - `helper_functions.py`: Shared functions (e.g., the Bass equation).
