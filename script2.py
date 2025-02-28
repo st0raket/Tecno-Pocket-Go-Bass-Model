@@ -44,7 +44,7 @@ def main():
     plt.ylabel('Cumulative Sales (millions)')
     plt.title('Nintendo Switch Bass Diffusion Fit')
     plt.legend()
-    plt.savefig('img/switch_bass_fit.png')
+    plt.savefig('img/image1.png')
     plt.close()
     
 
