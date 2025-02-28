@@ -66,14 +66,7 @@ A plot comparing **actual** vs. **fitted** Nintendo Switch sales is shown below:
 ### 5.2 Forecast
 Using these parameters in the Bass formula, we estimate:
 
-| Year | New Adopters (mil) | Cumulative (mil) |
-|------|--------------------|------------------|
-| 2024 | 2.0                | 2.0              |
-| 2025 | 4.0                | 6.0              |
-| 2026 | 5.5                | 11.5             |
-| ...  | ...                | ...              |
-
-*(Replace with your actual model output.)*
+See: [product_forecast.csv](../data/product_forecast.csv)
 
 ## 6. Conclusion
 
