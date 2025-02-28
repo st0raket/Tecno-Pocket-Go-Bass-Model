@@ -1,9 +1,3 @@
----
-title: "Tecno Pocket Go: Bass Diffusion Analysis"
-author: "Your Name"
-date: "YYYY-MM-DD"
----
-
 # Introduction
 
 This report examines the potential diffusion of the **Tecno Pocket Go**, an immersive handheld gaming device recognized by TIME’s Best Innovations. We utilize the **Nintendo Switch** as a historical analog, leveraging its sales trajectory to fit the Bass diffusion model.
@@ -23,6 +17,12 @@ We obtained **Nintendo Switch cumulative sales** from March 2017 to August 2024 
 | 2017-09  | 7.63                   |
 | ...      | ...                    |
 | 2024-08  | 143.42                 |
+
+Because the **Bass Model** often requires a **uniform time scale** (e.g., yearly), we decided to **extract the final (most recent) entry for each calendar year** from 2017 through 2024. This ensures that each row represents an end-of-year snapshot of total console sales, yielding a simpler, **annual** time series. Specifically, we:
+
+1. **Converted** the `Date` column to a datetime type.  
+2. **Grouped** the data by year (`.groupby('Year')`) and selected the **last row** in each group (i.e., the latest date that year).  
+3. **Saved** this resulting subset to a new CSV file: [nintendo_switch_sales_yearly.csv](../data/nintendo_switch_sales_yearly.csv).
 
 ## 3. Bass Model Overview
 
@@ -68,15 +68,8 @@ Using these parameters in the Bass formula, we estimate:
 
 See: [product_forecast.csv](../data/product_forecast.csv)
 
-## 6. Conclusion
-
-- Based on historical Nintendo Switch sales, the Bass model suggests Tecno Pocket Go could reach ~X million units by 2028.
-- Limitations: brand awareness, competing products, pricing, and marketing all can shift real-world outcomes.
-
 ## References
 
-1. Bass, F. M. (1969). *A new product growth for model consumer durables*. Management Science, 15(5), 215–227.
-2. TIME (2024). *Tecno Pocket Go*. [Link]
-3. Statista. (2023). *Global Nintendo Switch Sales Dataset*. [Link]
-4. [Any additional references or PDFs used]
+1. TIME (2024). *Tecno Pocket Go*. [Link](https://time.com/7094625/tecno-pocket-go/)
+2. Statista. (2023). *Global Nintendo Switch Sales Dataset*. [Link](https://www.statista.com/statistics/687059/nintendo-switch-unit-sales-worldwide/)
 

@@ -1,9 +1,3 @@
-"""
-Script Name: Data Cleaning
-Description: Loads the Nintendo Switch dataset, handles missing data, 
-and saves a cleaned version if needed.
-"""
-
 import pandas as pd
 
 def clean_data(input_path, output_path):

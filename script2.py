@@ -1,68 +1,72 @@
-# script2.py
-"""
-Script Name: Bass Model Estimation & Forecast
-Description:
-    1) Reads the cleaned Nintendo Switch data (look-alike innovation).
-    2) Estimates Bass Model parameters p, q, M from that data.
-    3) Uses the exact same p, q, M to forecast the new product's (e.g. Tecno Pocket Go) adoption.
-       (No parameter adjustments are made.)
-"""
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
-from helper_functions import bass_cumulative, create_time_index
+from helper_functions import bass_cumulative
 
 def main():
-    # 1) Load the cleaned dataset for the historical analog (Nintendo Switch)
-    df = pd.read_csv('data/dataset1_cleaned.csv')
+    switch_df = pd.read_csv('data/dataset1.csv')
     
-    # 2) Create a time index for each observation (1, 2, 3, ...)
-    df = create_time_index(df)
-    t_vals = df['t'].values
-    S_vals = df['Cumulative_Sales_millions'].values
+    switch_df['Date'] = pd.to_datetime(switch_df['Date'], format='%Y-%m')
+    switch_df.sort_values('Date', inplace=True)
     
-    # 3) Estimate Bass Model Parameters from the historical data
-    #    (p, q, M) using the continuous Bass cumulative form
-    p0 = [0.03, 0.4, 150]  # Initial guesses for p, q, M
+    # Extracting the last entry for each year
+    switch_df['Year'] = switch_df['Date'].dt.year
+    yearly_df = switch_df.groupby('Year').tail(1).copy()
+    # This ensures we get the final cumulative sales figure for each year
+    
+    yearly_data_path = 'data/nintendo_switch_sales_yearly.csv'
+    yearly_df.to_csv(yearly_data_path, index=False)
+    print(f"Saved yearly Switch data to: {yearly_data_path}")
+    
+    yearly_df.sort_values('Year', inplace=True)
+    yearly_df.reset_index(drop=True, inplace=True)
+    yearly_df['t'] = yearly_df.index + 1
+    
+    yearly_df.rename(columns={'Cumulative_Sales_millions': 'S'}, inplace=True)
+    
+    t_vals = yearly_df['t'].values
+    S_vals = yearly_df['S'].values
+    
+    print("\n=== Annual Nintendo Switch Data (Last Entry per Year) ===")
+    print(yearly_df[['Year', 'Date', 't', 'S']])
+    
+    p0 = [0.03, 0.4, 150]  
     params, _ = curve_fit(bass_cumulative, t_vals, S_vals, p0=p0, maxfev=10000)
     p_est, q_est, M_est = params
     
-    print("===== Fitted Bass Parameters (Nintendo Switch) =====")
+    print("\n===== Bass Model Parameters (Annual Data) =====")
     print(f"Estimated p = {p_est:.4f}")
     print(f"Estimated q = {q_est:.4f}")
     print(f"Estimated M = {M_est:.2f} million")
     
-    # 4) Plot the Bass fit vs. actual data
-    S_pred = bass_cumulative(t_vals, p_est, q_est, M_est)
-    
+    S_fit = bass_cumulative(t_vals, p_est, q_est, M_est)
     plt.figure(figsize=(8,5))
-    plt.scatter(t_vals, S_vals, label='Actual Data', alpha=0.7)
-    plt.plot(t_vals, S_pred, 'r-', label='Bass Fit')
-    plt.xlabel('Time Index (t)')
+    plt.scatter(t_vals, S_vals, label='Actual Annual Data', alpha=0.7)
+    plt.plot(t_vals, S_fit, 'r-', label='Bass Fit')
+    plt.xlabel('Time (Annual Index)')
     plt.ylabel('Cumulative Sales (millions)')
-    plt.title('Nintendo Switch Bass Diffusion Fit')
+    plt.title('Nintendo Switch (Annual) Bass Diffusion Fit')
     plt.legend()
-    plt.savefig('img/image1.png')
+    plt.savefig('img/switch_bass_fit_annual.png')
     plt.close()
     
-
-    # The original dataset has inconsistant periods so a period here is 
+    future_start = yearly_df['t'].max() + 1
+    future_end = future_start + 8  
+    future_t = np.arange(future_start, future_end)
     
-    forecast_t = np.arange(1, 9, 1)
-    new_product_pred = bass_cumulative(forecast_t, p_est, q_est, M_est)
+    new_product_pred = bass_cumulative(future_t, p_est, q_est, M_est)
     
     forecast_df = pd.DataFrame({
-        't': forecast_t,
+        't': future_t,
         'Cumulative_Adoption': new_product_pred
     })
     
-    # Save to CSV
-    forecast_df.to_csv('data/product_forecast.csv', index=False)
-    
-    print("\n===== Forecast for the New Innovation (Using SAME p, q, M) =====")
+    forecast_path = 'data/product_forecast.csv'
+    forecast_df.to_csv(forecast_path, index=False)
+    print(f"\n===== Forecast for New Innovation (No Parameter Adjustment) =====")
     print(forecast_df)
+    print(f"Saved forecast to: {forecast_path}\n")
 
 if __name__ == '__main__':
     main()
